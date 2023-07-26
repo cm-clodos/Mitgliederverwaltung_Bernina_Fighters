@@ -1,0 +1,20 @@
+{
+  "name": "diplomarbeit_mitgliederverwaltung_uhc_bernina_fighters",
+  "version": "1.0.0",
+  "description": "Mitgliederverwaltung für den Verein UHC Bernina Fighters",
+  "main": "index.js",
+  "scripts": {
+    "test": "cross-env NODE_ENV=test DB_NAME=Test_Mitgliederverwaltung concurrently -n=Server -c=magenta,cyan \"cd server && npm run test\"",
+    "test:e2e": "cross-env NODE_ENV=test DB_NAME=Test_Mitgliederverwaltung concurrently -n=Server -c=magenta,cyan \"npm run devStart\" \"cd client && npm run test:e2e\" --kill-others",
+    "devStart": "cross-env NODE_ENV=development concurrently -n=Server,Client -c=magenta,cyan \"cd server && npm run dev\" \"cd client && npm run serve\"",
+    "prodStart": "cross-env NODE_ENV=production concurrently -n=Server,Client -c=magenta,cyan \"cd server && npm run start\" \"cd client && npm run serve\""
+  },
+  "author": "Claudia Martinez",
+  "dependencies": {
+    "dotenv": "^16.0.3"
+  },
+  "devDependencies": {
+    "concurrently": "^8.0.1",
+    "cross-env": "^7.0.3"
+  }
+}

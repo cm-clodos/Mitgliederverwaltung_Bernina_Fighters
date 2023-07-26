@@ -1,0 +1,23 @@
+.export {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  border: 1px solid #ddd;
+  margin: 10px;
+}
+
+.btn {
+  padding: 10px 20px;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  width: 200px;
+  margin: 5px;
+}
+
+.export-title{
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
