@@ -1,8 +1,6 @@
 # Mitgliederverwaltung UHC Bernina Fighters
-## Diplomarbeit von Claudia Martinez
-### NDS HF Applikationsentwicklerin 2023
 
-Dieses Git Repository wurde erstellt für die Diplomarbeit von Claudia Martinez. Die Applikation ist eine Mitgliederverwaltung für den Verein UHC Bernina Fighters. 
+Dies ist eine Mitgliederverwaltung für den Unihockey Verein UHC Bernina Fighters. Dieses Repository ist die Weiterentwicklung der Diplomarbeit NDS HF Applikationsentwicklung von Claudia Martinez.
 
 
 
@@ -78,7 +76,7 @@ cd server && npm install
 
 ## Konfiguration
 ### Environment Variablen
-Die Applikation hat bereits eine Beispiel example.env Datei. Diese muss kopiert, umbenannt und angepasst werden. 
+Die Applikation hat bereits für den Server und den Client je eine Beispiel example.env Datei. Diese muss kopiert, umbenannt und angepasst werden. 
 
 1. Kopieren Sie die Datei example.env und benennen Sie diese in .env um.
 2. Öffnen Sie die Datei .env und passen Sie die Variablen an, die mit Platzhaltern versehen sind.

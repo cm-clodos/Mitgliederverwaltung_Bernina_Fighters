@@ -22,11 +22,13 @@ export default {
   data() {
     return {
       selectedOption: "all",
+      server_hostname: process.env.VUE_APP_SERVER_HOSTNAME,
+      server_port: process.env.VUE_APP_SERVER_PORT
     }
   },
   methods: {
     handleTrikotExport() {
-      const baseUrl = "http://localhost:3000/trikots/export/download";
+      const baseUrl = "http://" + this.server_hostname + ":" + this.server_port + "/trikots/export/download";
       const queryParam = `filter=${this.selectedOption}`;
       this.$refs.downloadForm.action = `${baseUrl}?${queryParam}`;
       this.$refs.downloadForm.submit();

@@ -44,7 +44,9 @@ export default {
       selectedPeriod: "",
       periods: [],
       periodsInYears: [],
-      modalVisible: false
+      modalVisible: false,
+      server_hostname: process.env.VUE_APP_SERVER_HOSTNAME,
+      server_port: process.env.VUE_APP_SERVER_PORT
     }
   },
   mounted() {
@@ -56,7 +58,7 @@ export default {
         event.preventDefault();
         this.modalVisible = true;
       }else {
-        const baseUrl = "http://localhost:3000/members/mail/export/download";
+        const baseUrl = "http://" + this.server_hostname + ":" + this.server_port + "/members/mail/export/download";
         const queryParam = `filter=${this.selectedOption}`;
         const queryParam2 = `&period=${this.selectedPeriod}`;
         this.$refs.downloadForm.action = `${baseUrl}?${queryParam}${queryParam2}`;
