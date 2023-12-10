@@ -5,7 +5,8 @@ export default defineStore("user", {
     userLoggedIn: false,
   }),
   actions: {
-    authenticate() {
+    authenticate(userCredentials) {
+      console.log("userCredentials", userCredentials);
       this.userLoggedIn = true;
     },
     signOut() {
