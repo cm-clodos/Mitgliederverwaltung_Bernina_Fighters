@@ -1,84 +1,81 @@
 <template>
   <main class="home">
-    <LoginForm v-if="!this.userLoggedIn" />
-    <template v-else>
-      <h1 class="view-title" data-test="site-title">Übersicht Mitgliederverwaltung</h1>
-      <div class="container">
-        <div class="card">
-          <div class="card-header">
-            <h4>Mitglieder
-              <RouterLink to="/members/new" class="btn btn-primary float-end">Mitglied hinzufügen</RouterLink>
-            </h4>
-          </div>
-          <div class="card-body">
-            <div class="row">
-              <div class="col-sm-9 mb-3">
-                <input type="text" @keyup.enter="searchMember" class="form-control" id="search" v-model="search"
-                  placeholder="Suche nach Nachname...">
-              </div>
-              <div class="col-sm-3 mb-3">
-                <button type="button" @click="searchMember" class="btn btn-primary btn-block">Suchen</button>
-              </div>
+    <h1 class="view-title" data-test="site-title">Übersicht Mitgliederverwaltung</h1>
+    <div class="container">
+      <div class="card">
+        <div class="card-header">
+          <h4>Mitglieder
+            <RouterLink to="/members/new" class="btn btn-primary float-end">Mitglied hinzufügen</RouterLink>
+          </h4>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-sm-9 mb-3">
+              <input type="text" @keyup.enter="searchMember" class="form-control" id="search" v-model="search"
+                placeholder="Suche nach Nachname...">
             </div>
-            <table class="table table-bordered">
-              <thead>
-                <tr>
-                  <th>Vorname</th>
-                  <th>Nachname
-                    <font-awesome-icon @click="sortByMemberLastname" icon="sort" />
-                  </th>
-                  <th>Email</th>
-                  <th>Telefon</th>
-                  <th>Aktiv
-                    <font-awesome-icon @click="sortByActive" icon="sort" />
-                  </th>
-                  <th>Eintritt
-                    <font-awesome-icon @click="sortByEntryDate" icon="sort" />
-                  </th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody v-if="this.members.length > 0">
-                <tr v-for="(member, index) in displayedMembers" :key="index">
-                  <td data-cell="vorname"> {{ member.firstname }}</td>
-                  <td data-cell="nachname"> {{ member.lastname }}</td>
-                  <td data-cell="email"> {{ member.email }}</td>
-                  <td data-cell="telefon"> {{ member.telephone }}</td>
-                  <td data-cell="aktiv"> {{ formatActiveValue(member.active) }}</td>
-                  <td data-cell="eintritt"> {{ this.formatDate(member.entry_date) }}</td>
-                  <td data-cell="actions">
-                    <div class="actions-container">
-                      <RouterLink :to="{ path: 'members/' + member.id + '/info' }" class="btn btn-warning action-btn">
-                        <font-awesome-icon class="action-icon" icon="eye" />
-                      </RouterLink>
-                      <RouterLink :to="{ path: 'members/' + member.id }" class="btn btn-success action-btn">
-                        <font-awesome-icon class="action-icon" icon="pencil" />
-                      </RouterLink>
-                      <button data-test="delete-btn" type="button" @click="deleteConfirmation(member.id)"
-                        class="btn btn-danger action-btn"><font-awesome-icon class="action-icon"
-                          icon="trash-can" /></button>
-                    </div>
-                  </td>
-                </tr>
-                <div class="row">
-                  <div class="mb-3 d-inline-block">
-                    <h3 class="sum-text">Total aktive Mitglieder: {{ this.sumActiveMembers }}</h3>
-                  </div>
-                </div>
-              </tbody>
-              <tbody v-else>
-                <tr>
-                  <td data-test="no-data-text" colspan="8" class="text-center">Mitgliederdaten werden geladen...</td>
-                </tr>
-              </tbody>
-            </table>
-            <Pagination :totalPages="totalPages" :currentPage="currentPage" :changePage="changePage"></Pagination>
-            <ConfirmModal :show="modalVisible" @confirm="handleConfirm" @cancel="closeModal" title="Mitglied löschen"
-              message="Das Mitglied wirklich löschen?"></ConfirmModal>
+            <div class="col-sm-3 mb-3">
+              <button type="button" @click="searchMember" class="btn btn-primary btn-block">Suchen</button>
+            </div>
           </div>
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>Vorname</th>
+                <th>Nachname
+                  <font-awesome-icon @click="sortByMemberLastname" icon="sort" />
+                </th>
+                <th>Email</th>
+                <th>Telefon</th>
+                <th>Aktiv
+                  <font-awesome-icon @click="sortByActive" icon="sort" />
+                </th>
+                <th>Eintritt
+                  <font-awesome-icon @click="sortByEntryDate" icon="sort" />
+                </th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody v-if="this.members.length > 0">
+              <tr v-for="(member, index) in displayedMembers" :key="index">
+                <td data-cell="vorname"> {{ member.firstname }}</td>
+                <td data-cell="nachname"> {{ member.lastname }}</td>
+                <td data-cell="email"> {{ member.email }}</td>
+                <td data-cell="telefon"> {{ member.telephone }}</td>
+                <td data-cell="aktiv"> {{ formatActiveValue(member.active) }}</td>
+                <td data-cell="eintritt"> {{ this.formatDate(member.entry_date) }}</td>
+                <td data-cell="actions">
+                  <div class="actions-container">
+                    <RouterLink :to="{ path: 'members/' + member.id + '/info' }" class="btn btn-warning action-btn">
+                      <font-awesome-icon class="action-icon" icon="eye" />
+                    </RouterLink>
+                    <RouterLink :to="{ path: 'members/' + member.id }" class="btn btn-success action-btn">
+                      <font-awesome-icon class="action-icon" icon="pencil" />
+                    </RouterLink>
+                    <button data-test="delete-btn" type="button" @click="deleteConfirmation(member.id)"
+                      class="btn btn-danger action-btn"><font-awesome-icon class="action-icon"
+                        icon="trash-can" /></button>
+                  </div>
+                </td>
+              </tr>
+              <div class="row">
+                <div class="mb-3 d-inline-block">
+                  <h3 class="sum-text">Total aktive Mitglieder: {{ this.sumActiveMembers }}</h3>
+                </div>
+              </div>
+            </tbody>
+            <tbody v-else>
+              <tr>
+                <td data-test="no-data-text" colspan="8" class="text-center">Mitgliederdaten werden geladen...</td>
+              </tr>
+            </tbody>
+          </table>
+          <Pagination :totalPages="totalPages" :currentPage="currentPage" :changePage="changePage"></Pagination>
+          <ConfirmModal :show="modalVisible" @confirm="handleConfirm" @cancel="closeModal" title="Mitglied löschen"
+            message="Das Mitglied wirklich löschen?"></ConfirmModal>
         </div>
       </div>
-    </template>
+    </div>
   </main>
 </template>
 

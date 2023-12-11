@@ -84,7 +84,7 @@ export default {
   methods: {
     logout() {
       this.userStore.signOut();
-      this.$router.push({ name: 'Home' });
+      this.$router.push({ name: 'Login' });
     },
   },
 }

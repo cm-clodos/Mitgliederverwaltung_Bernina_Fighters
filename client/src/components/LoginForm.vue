@@ -81,6 +81,7 @@ export default {
                     await this.authenticate(this.model.userCredentials)
                     console.log("Your Logged in")
                     this.toast.success("Du bist eingeloggt!");
+                    this.$router.push({ name: 'Home' });
 
                 } catch (err) {
                     this.toast.error("Fehler beim übermitteln des Formulars!")
@@ -89,8 +90,6 @@ export default {
             } else {
                 this.toast.error("Bitte fülle die Felder korrekt aus!")
             }
-            // lädt die Seite neu 
-            window.location.reload();
         },
     },
 

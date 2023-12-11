@@ -7,11 +7,14 @@ import MemberPaymentView from "@/views/MemberPaymentView.vue";
 import TrikotView from "@/views/TrikotView.vue";
 import TrikotNewView from "@/views/TrikotNewView.vue";
 import ExportView from "@/views/ExportView.vue";
+import LoginForm from "@/components/LoginForm.vue";
+import useUserStore from "@/stores/user";
 
 const router = createRouter({
   history: createWebHistory(),
   routes: [
     { name: "Home", path: "/", component: MemberView },
+    { name: "Login", path: "/login", component: LoginForm },
     { name: "Mitgliederverwaltung", path: "/members", component: MemberView },
     {
       name: "Mitglieder hinzufügen",
@@ -45,6 +48,15 @@ const router = createRouter({
       component: TrikotNewView,
     },
   ],
+});
+
+router.beforeEach((to, from, next) => {
+  const store = useUserStore();
+  console.log(store.userLoggedIn);
+  if (!store.userLoggedIn && to.name !== "Login") {
+    return next({ name: "Login" });
+  }
+  next();
 });
 
 export default router;
