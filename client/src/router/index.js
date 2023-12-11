@@ -7,12 +7,11 @@ import MemberPaymentView from "@/views/MemberPaymentView.vue";
 import TrikotView from "@/views/TrikotView.vue";
 import TrikotNewView from "@/views/TrikotNewView.vue";
 import ExportView from "@/views/ExportView.vue";
-import LoginView from "@/views/LoginView.vue";
 
 const router = createRouter({
   history: createWebHistory(),
   routes: [
-    { name: "Home", path: "/", component: LoginView },
+    { name: "Home", path: "/", component: MemberView },
     { name: "Mitgliederverwaltung", path: "/members", component: MemberView },
     {
       name: "Mitglieder hinzufügen",

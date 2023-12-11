@@ -50,7 +50,7 @@ export default {
     setup() {
         return { v$: useVuelidate() }
     },
-    name: "LoginView",
+    name: "LoginForm",
     data() {
         return {
             model: {
