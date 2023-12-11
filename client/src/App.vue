@@ -23,6 +23,7 @@ export default {
   computed: {
     ...mapWritableState(useUserStore, ['userLoggedIn']),
   },
+  // setzt den user login state inital beim laden der app auf true, wenn der user bereits eingeloggt ist
   created() {
     if (auth.currentUser) {
       this.userLoggedIn = true;

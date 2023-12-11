@@ -61,8 +61,8 @@
                 </router-link></a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#" @click.prevent="this.userStore.signOut">
-                <span class="nav-icons">Logout</span>
+              <a class="nav-link" href="#" @click.prevent="logout">
+                <span class="nav-icons btn-logout">Logout</span>
               </a>
             </li>
           </ul>
@@ -80,6 +80,12 @@ export default {
   name: "Header",
   computed: {
     ...mapStores(useUserStore),
+  },
+  methods: {
+    logout() {
+      this.userStore.signOut();
+      this.$router.push({ name: 'Home' });
+    },
   },
 }
 </script>
