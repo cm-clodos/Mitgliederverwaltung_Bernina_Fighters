@@ -89,6 +89,8 @@ export default {
             } else {
                 this.toast.error("Bitte fülle die Felder korrekt aus!")
             }
+            // lädt die Seite neu 
+            window.location.reload();
         },
     },
 

@@ -7,6 +7,7 @@ import App from "./App.vue";
 import "./registerServiceWorker";
 import router from "./router";
 import Toast from "vue-toast-notification";
+import { auth } from "./auth/firebase";
 import "vue-toast-notification/dist/theme-sugar.css";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
@@ -34,9 +35,24 @@ library.add(
 const toastOptions = {};
 const pinia = createPinia();
 
+let app;
+
+auth.onAuthStateChanged(() => {
+  if (!app) {
+    app = createApp(App);
+    app.component("font-awesome-icon", FontAwesomeIcon);
+    app.use(pinia);
+    app.use(router);
+    app.use(Toast, toastOptions);
+    app.mount("#app");
+  }
+});
+
+/*
 const app = createApp(App);
 app.component("font-awesome-icon", FontAwesomeIcon);
 app.use(pinia);
 app.use(router);
 app.use(Toast, toastOptions);
 app.mount("#app");
+*/
