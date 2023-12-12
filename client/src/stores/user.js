@@ -4,8 +4,18 @@ import { auth } from "@/auth/firebase";
 export default defineStore("user", {
   state: () => ({
     userLoggedIn: false,
-    token: "",
+    token: null,
   }),
+  getters: {
+    getReqHeaders: (state) => {
+      return {
+        Authorization: `Bearer ${state.token}`,
+      };
+    },
+    getReqHeaderToken: (state) => {
+      return `Bearer ${state.token}`;
+    },
+  },
   actions: {
     setToken(token) {
       this.token = token;
@@ -26,7 +36,7 @@ export default defineStore("user", {
     async signOut() {
       // entfernt den Token aus dem LocalStorage
       await auth.signOut();
-      this.setToken("");
+      this.setToken(null);
 
       this.userLoggedIn = false;
     },

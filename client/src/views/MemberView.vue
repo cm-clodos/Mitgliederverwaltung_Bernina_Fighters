@@ -88,8 +88,6 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import ConfirmModal from "@/components/ConfirmModal.vue";
 import Pagination from "@/components/Pagination.vue";
 import LoginForm from "@/components/LoginForm.vue";
-import { mapWritableState } from "pinia";
-import useUserStore from "@/stores/user";
 
 export default {
   name: 'MitgliederView',
@@ -116,7 +114,6 @@ export default {
     };
   },
   computed: {
-    ...mapWritableState(useUserStore, ['userLoggedIn']),
     totalPages() {
       return Math.ceil(this.members.length / this.itemsPerPage);
     },
@@ -133,14 +130,19 @@ export default {
     formatActiveValue,
     getMembers() {
       axios.get("/members/").then(res => {
-        this.members = res.data
-        this.filterActiveMembers();
+        if (Array.isArray(res.data)) {
+          this.members = res.data
+          this.filterActiveMembers();
+        } else {
+          console.log(res.data)
+          this.toast.error("Fehler beim Laden der Mitgliederdaten");
+        }
       }).catch(error => {
         console.log(error)
         if ([500].includes(error.response.status)) {
           this.toast.error(error.response.data.message);
         } else {
-          console.log("Unexpected error: " + error.response.status);
+          console.log("Unexpected error: " + error);
         }
       });
     },
