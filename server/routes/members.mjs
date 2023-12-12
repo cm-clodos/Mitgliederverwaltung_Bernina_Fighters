@@ -1,11 +1,10 @@
 import express from "express";
 import memberController from "../controller/memberController.mjs";
-import {memberDataSanitzer} from "../middleware/inputSanitizer.mjs";
-import {validateMemberData} from "../middleware/validateMemberData.mjs";
-
+import { memberDataSanitzer } from "../middleware/inputSanitizer.mjs";
+import { validateMemberData } from "../middleware/validateMemberData.mjs";
+import { authenticateToken } from "../middleware/authenticate.mjs";
 
 const router = express.Router();
-
 
 /**
  * @swagger
@@ -79,7 +78,7 @@ const router = express.Router();
  *                  example: false
  *                  description: Erfolgsstatus der Anfrage
  */
-router.get('/', memberController.handleGetAllMembers);
+router.get("/", authenticateToken, memberController.handleGetAllMembers);
 /**
  * @swagger
  * /members/roles:
@@ -127,7 +126,7 @@ router.get('/', memberController.handleGetAllMembers);
  *                  example: false
  *                  description: Erfolgsstatus der Anfrage
  */
-router.get('/roles', memberController.handleGetAllRoles);
+router.get("/roles", authenticateToken, memberController.handleGetAllRoles);
 /**
  * @swagger
  * /members/payments:
@@ -191,7 +190,7 @@ router.get('/roles', memberController.handleGetAllRoles);
  *                  example: false
  *                  description: Erfolgsstatus der Anfrage
  */
-router.get('/payments', memberController.handleGetAllPayments);
+router.get("/payments", authenticateToken, memberController.handleGetAllPayments);
 /**
  * @swagger
  * /members/payments/period:
@@ -236,7 +235,7 @@ router.get('/payments', memberController.handleGetAllPayments);
  *                  example: false
  *                  description: Erfolgsstatus der Anfrage
  */
-router.get('/payments/period', memberController.handleGetAllPaymentPeriods);
+router.get("/payments/period", authenticateToken, memberController.handleGetAllPaymentPeriods);
 /**
  * @swagger
  * /members/payments/{id}:
@@ -329,7 +328,7 @@ router.get('/payments/period', memberController.handleGetAllPaymentPeriods);
  *                   example: false
  *                   description: Erfolgsstatus der Anfrage
  */
-router.get('/payments/:id', memberController.handleGetPaymentById);
+router.get("/payments/:id", authenticateToken, memberController.handleGetPaymentById);
 /**
  * @swagger
  * /members/{id}/info:
@@ -429,7 +428,7 @@ router.get('/payments/:id', memberController.handleGetPaymentById);
  *                  example: false
  *                  description: Erfolgsstatus der Anfrage
  */
-router.get('/:id/info', memberController.handleGetAllMemberInfo);
+router.get("/:id/info", authenticateToken, memberController.handleGetAllMemberInfo);
 /**
  * @swagger
  * /members/{id}:
@@ -529,7 +528,7 @@ router.get('/:id/info', memberController.handleGetAllMemberInfo);
  *                  example: false
  *                  description: Erfolgsstatus der Anfrage
  */
-router.get('/:id', memberController.handleGetMemberById);
+router.get("/:id", authenticateToken, memberController.handleGetMemberById);
 /**
  * @swagger
  * /members:
@@ -633,7 +632,13 @@ router.get('/:id', memberController.handleGetMemberById);
  *                   example: false
  *                   description: Erfolgsstatus der Anfrage
  */
-router.post('/', memberDataSanitzer, validateMemberData, memberController.handleNewMember);
+router.post(
+  "/",
+  authenticateToken,
+  memberDataSanitzer,
+  validateMemberData,
+  memberController.handleNewMember
+);
 /**
  * @swagger
  * /members/payments/{id}:
@@ -721,7 +726,7 @@ router.post('/', memberDataSanitzer, validateMemberData, memberController.handle
  *                   example: false
  *                   description: Erfolgsstatus der Anfrage
  */
-router.put('/payments/:id', memberController.handleUpdatePayment);
+router.put("/payments/:id", authenticateToken, memberController.handleUpdatePayment);
 /**
  * @swagger
  * /members/payments/period:
@@ -766,7 +771,7 @@ router.put('/payments/:id', memberController.handleUpdatePayment);
  *                   example: false
  *                   description: Erfolgsstatus der Anfrage
  */
-router.post('/payments/period', memberController.handleCreateNewPaymentPeriod);
+router.post("/payments/period", authenticateToken, memberController.handleCreateNewPaymentPeriod);
 /**
  * @swagger
  * /members/{id}:
@@ -901,7 +906,13 @@ router.post('/payments/period', memberController.handleCreateNewPaymentPeriod);
  *                   example: false
  *                   description: Erfolgsstatus der Anfrage
  */
-router.put('/:id', memberDataSanitzer, validateMemberData, memberController.handleUpdateMember);
+router.put(
+  "/:id",
+  authenticateToken,
+  memberDataSanitzer,
+  validateMemberData,
+  memberController.handleUpdateMember
+);
 /**
  * @swagger
  * /members/{id}:
@@ -978,7 +989,7 @@ router.put('/:id', memberDataSanitzer, validateMemberData, memberController.hand
  *                   example: false
  *                   description: Erfolgsstatus der Anfrage
  */
-router.delete('/:id', memberController.handleDeleteMember);
+router.delete("/:id", authenticateToken, memberController.handleDeleteMember);
 /**
  * @swagger
  * /members/mail/export/download:
@@ -1053,7 +1064,7 @@ router.delete('/:id', memberController.handleDeleteMember);
  *                   example: false
  *                   description: Erfolgsstatus der Anfrage
  */
-router.post('/mail/export/download', memberController.handleMailListExportFile);
+router.post("/mail/export/download", authenticateToken, memberController.handleMailListExportFile);
 /**
  * @swagger
  * /members/export/download:
@@ -1123,7 +1134,6 @@ router.post('/mail/export/download', memberController.handleMailListExportFile);
  *                   example: false
  *                   description: Erfolgsstatus der Anfrage
  */
-router.post('/export/download', memberController.handleMemberListExportFile);
-
+router.post("/export/download", authenticateToken, memberController.handleMemberListExportFile);
 
 export default router;

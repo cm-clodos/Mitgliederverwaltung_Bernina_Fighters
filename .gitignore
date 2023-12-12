@@ -1,3 +1,8 @@
 /server/.env
 node_modules
 
+.idea/misc.xml
+.idea/Mitgliederverwaltung.iml
+.idea/modules.xml
+.idea/vcs.xml
+server/config/service-account-bernina-fighters.json
