@@ -6,3 +6,5 @@ node_modules
 .idea/modules.xml
 .idea/vcs.xml
 server/config/service-account-bernina-fighters.json
+client/cypress/fixtures/auth-user.json
+client/cypress.env.json
