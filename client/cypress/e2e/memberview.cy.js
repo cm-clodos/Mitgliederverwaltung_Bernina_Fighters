@@ -16,6 +16,6 @@ describe("home page", () => {
 
   afterEach(() => {
     cy.logout();
-    cy.reload();
+    cy.reload;
   });
 });

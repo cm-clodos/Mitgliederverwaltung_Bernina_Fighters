@@ -20,7 +20,18 @@ Cypress.Commands.add("getByData", (selector) => {
 });
 
 Cypress.Commands.add("login", (email, password) => {
-  return auth.signInWithEmailAndPassword(email, password);
+  cy.session(
+    ["TestUser1"],
+    () => {
+      return auth.signInWithEmailAndPassword(email, password);
+    }
+    /*
+  Für die Verwendung von mehreren Tests mit dem gleichen User
+  {
+  cacheAcrossSpecs: true,
+  }
+  */
+  );
 });
 
 Cypress.Commands.add("logout", () => {
