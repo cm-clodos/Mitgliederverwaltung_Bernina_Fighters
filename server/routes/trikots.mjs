@@ -1,7 +1,8 @@
 import express from "express";
 import trikotController from "../controller/trikotController.mjs";
-import {trikotDataSanitizer} from "../middleware/inputSanitizer.mjs";
-import {validateTrikotData} from "../middleware/validateTrikotData.mjs";
+import { trikotDataSanitizer } from "../middleware/inputSanitizer.mjs";
+import { validateTrikotData } from "../middleware/validateTrikotData.mjs";
+import { authenticateToken } from "../middleware/authenticate.mjs";
 
 const router = express.Router();
 /**
@@ -69,7 +70,7 @@ const router = express.Router();
  *                  example: false
  *                  description: Erfolgsstatus der Anfrage
  */
-router.get('/', trikotController.handleGetAllTrikots);
+router.get("/", authenticateToken, trikotController.handleGetAllTrikots);
 /**
  * @swagger
  * /trikots:
@@ -162,7 +163,13 @@ router.get('/', trikotController.handleGetAllTrikots);
  *                   example: false
  *                   description: Erfolgsstatus der Anfrage
  */
-router.post('/', trikotDataSanitizer, validateTrikotData, trikotController.handleNewTrikot);
+router.post(
+  "/",
+  authenticateToken,
+  trikotDataSanitizer,
+  validateTrikotData,
+  trikotController.handleNewTrikot
+);
 /**
  * @swagger
  * /trikots/{number}:
@@ -282,7 +289,13 @@ router.post('/', trikotDataSanitizer, validateTrikotData, trikotController.handl
  *                   example: false
  *                   description: Erfolgsstatus der Anfrage
  */
-router.put('/:id', trikotDataSanitizer,validateTrikotData, trikotController.handleUpdateTrikot);
+router.put(
+  "/:id",
+  authenticateToken,
+  trikotDataSanitizer,
+  validateTrikotData,
+  trikotController.handleUpdateTrikot
+);
 /**
  * @swagger
  * /trikots/{number}:
@@ -359,7 +372,7 @@ router.put('/:id', trikotDataSanitizer,validateTrikotData, trikotController.hand
  *                   example: false
  *                   description: Erfolgsstatus der Anfrage
  */
-router.delete('/:id',trikotController.handleDeleteTrikot);
+router.delete("/:id", authenticateToken, trikotController.handleDeleteTrikot);
 /**
  * @swagger
  * /trikots/export/download:
@@ -429,6 +442,6 @@ router.delete('/:id',trikotController.handleDeleteTrikot);
  *                   example: false
  *                   description: Erfolgsstatus der Anfrage
  */
-router.post('/export/download', trikotController.handleTrikotListExportFile);
+router.post("/export/download", authenticateToken, trikotController.handleTrikotListExportFile);
 
 export default router;

@@ -1,7 +1,10 @@
 import axios from "axios";
+import useUserStore from "@/stores/user";
 
-const baseURL = "http://" + process.env.VUE_APP_SERVER_HOSTNAME;
-const basePORT = process.env.VUE_APP_SERVER_PORT;
-export default axios.create({
-    baseURL: baseURL + ":" + basePORT,
+axios.interceptors.request.use((request, config) => {
+  const userStore = useUserStore();
+  request.headers.Authorization = userStore.getReqHeaderToken;
+  return request;
 });
+
+export default axios;
