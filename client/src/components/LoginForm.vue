@@ -5,7 +5,7 @@
                 <div class="col-md-6 mt-5">
                     <div class="card">
                         <div class="card-header bg-primary text-white">
-                            <h3 class="card-title text-center">Login</h3>
+                            <h3 class="card-title text-center" data-test="site-title">Login</h3>
                         </div>
                         <div class="card-body">
                             <form ref="form" @submit.prevent="handleLogin">
@@ -66,8 +66,8 @@ export default {
         return {
             model: {
                 userCredentials: {
-                    email: { required, email },
-                    password: { required },
+                    email: { required, email: helpers.withMessage('Ungültige Email', email) },
+                    password: { required: helpers.withMessage('Passwort ist erforderlich', required) },
                 },
             },
         };

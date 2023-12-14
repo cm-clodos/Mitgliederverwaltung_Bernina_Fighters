@@ -61,7 +61,7 @@
                 </router-link></a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#" @click.prevent="logout">
+              <a class="nav-link" href="#" data-test="logout-btn" @click.prevent="logout">
                 <span class="nav-icons btn-logout">Logout</span>
               </a>
             </li>
