@@ -201,6 +201,14 @@ cd client && npm run test
 
 ### E2E Tests
 
+#### Konfiguration E2E Tests
+
+Für die E2E Test muss ein Test User erstellt werden in der Firebase Konsole. Die Userdaten werden im cypress/fixtures/auth-user.json gespeichert und in der .gitignore Datei hinzugefügt werden. (Verwende die Example Datei und bennene sie um.)
+
+Ebenfalls muss im Root des Client Verzeichnis eine cypress.env.json erstellt werden und in der .gitignore Datei hinzugefügt werden. In der cypress.env.json müssen die Firebase Konfigurationsdaten eingetragen werden. (Verwende die Example Datei und bennene sie um.)
+
+#### Ausführung E2E Tests
+
 Um die E2E Tests auszuführen, muss die Applikation im Development Mode gestartet sein. Stellen Sie sicher, dass Sie sich im Hauptverzeichnis befinden. Führen Sie folgenden Befehl aus:
 
 ```bash

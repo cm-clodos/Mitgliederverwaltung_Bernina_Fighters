@@ -6,7 +6,7 @@ const firebaseConfig = {
   // config der Environment Variablen im Cypress.env.json
   apiKey: Cypress.env("FIREBASE_API_KEY"),
   authDomain: Cypress.env("FIREBASE_AUTH_DOMAIN"),
-  projectId: Cypress.env("IREBASE_PROJECT_ID"),
+  projectId: Cypress.env("FIREBASE_PROJECT_ID"),
 };
 
 // initialize Firebase
