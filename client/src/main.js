@@ -22,16 +22,7 @@ import {
   faFileCsv,
 } from "@fortawesome/free-solid-svg-icons";
 
-library.add(
-  faPeopleGroup,
-  faShirt,
-  faSort,
-  faEye,
-  faPencil,
-  faTrashCan,
-  faFloppyDisk,
-  faFileCsv
-);
+library.add(faPeopleGroup, faShirt, faSort, faEye, faPencil, faTrashCan, faFloppyDisk, faFileCsv);
 const toastOptions = {};
 const pinia = createPinia();
 
@@ -49,6 +40,8 @@ auth.onAuthStateChanged(() => {
 });
 
 /*
+Ohne Auth Observer
+
 const app = createApp(App);
 app.component("font-awesome-icon", FontAwesomeIcon);
 app.use(pinia);
