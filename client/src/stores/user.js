@@ -34,7 +34,6 @@ export default defineStore("user", {
       this.userLoggedIn = true;
     },
     async signOut() {
-      // entfernt den Token aus dem LocalStorage
       await auth.signOut();
       this.setToken(null);
 
