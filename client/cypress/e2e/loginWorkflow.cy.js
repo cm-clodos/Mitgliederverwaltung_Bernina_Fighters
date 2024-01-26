@@ -18,6 +18,16 @@ describe("Login page", () => {
     });
   });
 
+  context("Check password visibility", () => {
+    it("Click on eye button should change the password visibility", () => {
+      cy.getByData("input-password").type("test");
+      cy.getByData("password-eye-close").click();
+      cy.getByData("input-password").should("have.attr", "type", "text");
+      cy.getByData("password-eye-open").click();
+      cy.getByData("input-password").should("have.attr", "type", "password");
+    });
+  });
+
   context("Login with a invalid User", () => {
     it("Login with a invalid user, should display a toast message", () => {
       cy.getByData("input-email").type("test@test.com");

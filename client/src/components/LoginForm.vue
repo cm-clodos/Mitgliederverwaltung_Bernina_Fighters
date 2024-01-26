@@ -2,7 +2,7 @@
     <main class="login">
         <div class="container">
             <div class="row justify-content-center">
-                <div class="col-md-6 mt-5">
+                <div class="col-md-6 col-lg-6 col-xl-6 mt-5 mx-auto col-12">
                     <div class="card">
                         <div class="card-header bg-primary text-white">
                             <h3 class="card-title text-center" data-test="site-title">Login</h3>
@@ -19,7 +19,13 @@
                                     </span>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="password" class="form-label">Passwort</label>
+                                    <label for="password" class="form-label">Passwort <button type="button"
+                                            class="btn-password" @click="togglePasswordVisibility">
+                                            <font-awesome-icon v-if="!showPassword" class="password-icon"
+                                                data-test="password-eye-close" icon="eye-slash" />
+                                            <font-awesome-icon data-test="password-eye-open" v-else class="password-icon"
+                                                icon="eye" />
+                                        </button></label>
                                     <input data-test="input-password" type="password" class="form-control" id="password"
                                         name="password" v-model="model.userCredentials.password">
                                     <span v-if="v$.model.userCredentials.password.$error" data-test="error-message-password"
@@ -44,6 +50,7 @@ import { useVuelidate } from "@vuelidate/core";
 import { required, email, helpers } from "@vuelidate/validators";
 import { useToast } from 'vue-toast-notification';
 import { mapActions } from 'pinia';
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import useUserStore from '@/stores/user';
 
 export default {
@@ -51,8 +58,12 @@ export default {
         return { v$: useVuelidate() }
     },
     name: "LoginForm",
+    components: {
+        FontAwesomeIcon
+    },
     data() {
         return {
+            showPassword: false,
             model: {
                 userCredentials: {
                     email: "",
@@ -91,9 +102,18 @@ export default {
                 this.toast.error("Bitte fülle die Felder korrekt aus!")
             }
         },
+        togglePasswordVisibility() {
+            this.showPassword = !this.showPassword;
+
+            const passwordInput = document.getElementById("password");
+            passwordInput.type = passwordInput.type === "password" ? "text" : "password";
+
+        },
     },
 
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+@import "@/assets/styles/loginForm.scss";
+</style>

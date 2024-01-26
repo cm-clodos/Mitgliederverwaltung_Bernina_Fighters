@@ -16,13 +16,24 @@ import {
   faShirt,
   faSort,
   faEye,
+  faEyeSlash,
   faPencil,
   faTrashCan,
   faFloppyDisk,
   faFileCsv,
 } from "@fortawesome/free-solid-svg-icons";
 
-library.add(faPeopleGroup, faShirt, faSort, faEye, faPencil, faTrashCan, faFloppyDisk, faFileCsv);
+library.add(
+  faPeopleGroup,
+  faShirt,
+  faSort,
+  faEye,
+  faEyeSlash,
+  faPencil,
+  faTrashCan,
+  faFloppyDisk,
+  faFileCsv
+);
 const toastOptions = {};
 const pinia = createPinia();
 
