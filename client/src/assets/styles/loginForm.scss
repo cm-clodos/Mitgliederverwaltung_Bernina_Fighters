@@ -1,0 +1,28 @@
+.login {
+  width: 100%;
+}
+
+.password-container {
+  display: flex;
+}
+
+.btn-password {
+  background-color: transparent;
+  border: none;
+  padding: 0;
+  margin-left: 15px;
+
+  &:hover {
+    color: #007bff;
+    /* Ändere die Farbe nach deinen Wünschen */
+  }
+}
+
+/* Media Query für große Bildschirme (ab 1200px Breite) */
+@media screen and (min-width: 1200px) {
+  .login {
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}

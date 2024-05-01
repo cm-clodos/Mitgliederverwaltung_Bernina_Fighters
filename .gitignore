@@ -8,3 +8,5 @@ node_modules
 server/config/service-account-bernina-fighters.json
 client/cypress/fixtures/auth-user.json
 client/cypress.env.json
+auto_start.bat
+client/cypress/screenshots
