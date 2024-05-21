@@ -8,26 +8,28 @@ const messageCodes = {
     "tere-200": "Trikot erfolgreich aktualisiert",
     "tere-201": "Trikot erfolgreich hinzugefügt",
     "tere-202": "Trikot erfolgreich gelöscht",
-}
+    "ficatre-201": "Finanzkategorie erfolgreich hinzugefügt",
+    "ficatre-202": "Finanzkategorie erfolgreich gelöscht",
+};
 
 class CreateResponse {
     success;
     message;
     payload;
 
-    constructor(messageCode){
+    constructor(messageCode) {
         this.success = true;
-        this.message = messageCodes[messageCode] || "Unbekannte Nachricht" ;
+        this.message = messageCodes[messageCode] || "Unbekannte Nachricht";
     }
-    setMessage(message){
+    setMessage(message) {
         this.message = message;
         return this;
     }
-    setSuccess(successState){
+    setSuccess(successState) {
         this.success = successState;
         return this;
     }
-    setPayload(payload){
+    setPayload(payload) {
         this.payload = payload;
         return this;
     }
