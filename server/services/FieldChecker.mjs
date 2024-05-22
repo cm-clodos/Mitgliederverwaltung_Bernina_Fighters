@@ -139,7 +139,13 @@ export function formatFirstLetterOfNames(name) {
 
 export function checkTransCategoryName(transCategoryName) {
     const error = {};
-    if (transCategoryName.trim().length >= 20) {
+    if (
+        !transCategoryName ||
+        typeof transCategoryName !== "string" ||
+        transCategoryName.trim().length === 0
+    ) {
+        error.name = "Finanzkategorie ist erforderlich.";
+    } else if (transCategoryName.trim().length >= 20) {
         error.name = "Finanzkategorie darf maximal 20 Zeichen lang sein.";
     }
     return error;
