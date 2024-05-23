@@ -1,16 +1,19 @@
 <template>
     <main>
-        <h1 class="view-title" data-test="site-title">Bankkonto hinzufügen</h1>
+        <h1 class="view-title" data-test="site-title">Konto Verwaltung</h1>
+
     </main>
 
 
 </template>
 
 <script>
+
 export default {
-    name: 'FinanceAccountView',
+    name: 'FinanceAccount',
 
     components: {
+
 
     },
     data() {

@@ -71,11 +71,8 @@
                     <span>Transaktionen</span>
                   </router-link></li>
                 <li><router-link data-test="link-kategorien-hinzufügen" class="dropdown-item"
-                    :to="{ name: 'TransCategories' }">
-                    <span>Kategorien hinzufügen</span>
-                  </router-link></li>
-                <li><router-link data-test="link-konto-hinzufügen" class="dropdown-item" :to="{ name: 'Konto' }">
-                    <span>Konto hinzufügen</span>
+                    :to="{ name: 'Finanzverwaltung' }">
+                    <span>Verwaltung</span>
                   </router-link></li>
               </ul>
             </li>

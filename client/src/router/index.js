@@ -10,8 +10,7 @@ import ExportView from "@/views/ExportView.vue";
 import LoginForm from "@/components/LoginForm.vue";
 import FinanceManagerView from "@/views/FinanceManagerView.vue";
 import TransactionsView from "@/views/TransactionsView.vue";
-import TransCategoriesView from "@/views/TransCategoriesView.vue";
-import FinanceAccountView from "@/views/FinanceAccountView.vue";
+import FinanceManagerAdminView from "@/views/FinanceManagerAdminView.vue";
 import useUserStore from "@/stores/user";
 
 const router = createRouter({
@@ -62,14 +61,9 @@ const router = createRouter({
             component: TransactionsView,
         },
         {
-            name: "TransCategories",
-            path: "/finance/categories",
-            component: TransCategoriesView,
-        },
-        {
-            name: "Konto",
-            path: "/finance/accounts",
-            component: FinanceAccountView,
+            name: "Finanzverwaltung",
+            path: "/finance/admin",
+            component: FinanceManagerAdminView,
         },
     ],
 });
