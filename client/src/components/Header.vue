@@ -29,7 +29,8 @@
                     :to="{ name: 'Mitglieder hinzufügen' }">
                     <span>Mitglied hinzufügen</span>
                   </router-link></li>
-                <li><router-link data-test="link-bezahlübersicht" class="dropdown-item" :to="{ name: 'Bezahlübersicht' }">
+                <li><router-link data-test="link-bezahlübersicht" class="dropdown-item"
+                    :to="{ name: 'Bezahlübersicht' }">
                     <span>Bezahlübersicht</span>
                   </router-link></li>
               </ul>
@@ -55,8 +56,34 @@
             </li>
           </ul>
           <ul class="navbar-nav">
+            <li class="nav-item dropdown">
+              <a data-test="dropdown-trikotmenu" class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
+                role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <span class="nav-icons"><font-awesome-icon icon="coins" /></span>
+                <span class="nav-title">Buchhaltung</span>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
+                <li> <router-link data-test="link-buchhaltungsübersicht" class="dropdown-item"
+                    :to="{ name: 'Buchhaltung' }">
+                    <span>Übersicht</span>
+                  </router-link></li>
+                <li><router-link data-test="link-transaktionen" class="dropdown-item" :to="{ name: 'Transaktionen' }">
+                    <span>Transaktionen</span>
+                  </router-link></li>
+                <li><router-link data-test="link-kategorien-hinzufügen" class="dropdown-item"
+                    :to="{ name: 'TransCategories' }">
+                    <span>Kategorien hinzufügen</span>
+                  </router-link></li>
+                <li><router-link data-test="link-konto-hinzufügen" class="dropdown-item" :to="{ name: 'Konto' }">
+                    <span>Konto hinzufügen</span>
+                  </router-link></li>
+              </ul>
+            </li>
+          </ul>
+          <ul class="navbar-nav">
             <li class="nav-item">
-              <a class="nav-link" href="#"> <router-link data-test="link-csv-export" :to="{ name: 'Mitglieder Exporte' }">
+              <a class="nav-link" href="#"> <router-link data-test="link-csv-export"
+                  :to="{ name: 'Mitglieder Exporte' }">
                   <span class="nav-icons"><font-awesome-icon icon="file-csv" /></span>
                 </router-link></a>
             </li>

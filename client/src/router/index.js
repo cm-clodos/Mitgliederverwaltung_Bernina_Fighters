@@ -8,55 +8,79 @@ import TrikotView from "@/views/TrikotView.vue";
 import TrikotNewView from "@/views/TrikotNewView.vue";
 import ExportView from "@/views/ExportView.vue";
 import LoginForm from "@/components/LoginForm.vue";
+import FinanceManagerView from "@/views/FinanceManagerView.vue";
+import TransactionsView from "@/views/TransactionsView.vue";
+import TransCategoriesView from "@/views/TransCategoriesView.vue";
+import FinanceAccountView from "@/views/FinanceAccountView.vue";
 import useUserStore from "@/stores/user";
 
 const router = createRouter({
-  history: createWebHistory(),
-  routes: [
-    { name: "Home", path: "/", component: MemberView },
-    { name: "Login", path: "/login", component: LoginForm },
-    { name: "Mitgliederverwaltung", path: "/members", component: MemberView },
-    {
-      name: "Mitglieder hinzufügen",
-      path: "/members/new",
-      component: MemberNewView,
-    },
-    {
-      name: "Mitglied bearbeiten",
-      path: "/members/:id",
-      component: MemberEditView,
-    },
-    {
-      name: "Mitglieds informationen",
-      path: "/members/:id/info",
-      component: MemberInfoView,
-    },
-    {
-      name: "Mitglieder Exporte",
-      path: "/members/export",
-      component: ExportView,
-    },
-    {
-      name: "Bezahlübersicht",
-      path: "/members/payment",
-      component: MemberPaymentView,
-    },
-    { name: "Trikotverwaltung", path: "/trikots", component: TrikotView },
-    {
-      name: "Trikot hinzufügen",
-      path: "/trikots/new",
-      component: TrikotNewView,
-    },
-  ],
+    history: createWebHistory(),
+    routes: [
+        { name: "Home", path: "/", component: MemberView },
+        { name: "Login", path: "/login", component: LoginForm },
+        { name: "Mitgliederverwaltung", path: "/members", component: MemberView },
+        {
+            name: "Mitglieder hinzufügen",
+            path: "/members/new",
+            component: MemberNewView,
+        },
+        {
+            name: "Mitglied bearbeiten",
+            path: "/members/:id",
+            component: MemberEditView,
+        },
+        {
+            name: "Mitglieds informationen",
+            path: "/members/:id/info",
+            component: MemberInfoView,
+        },
+        {
+            name: "Mitglieder Exporte",
+            path: "/members/export",
+            component: ExportView,
+        },
+        {
+            name: "Bezahlübersicht",
+            path: "/members/payment",
+            component: MemberPaymentView,
+        },
+        { name: "Trikotverwaltung", path: "/trikots", component: TrikotView },
+        {
+            name: "Trikot hinzufügen",
+            path: "/trikots/new",
+            component: TrikotNewView,
+        },
+        {
+            name: "Buchhaltung",
+            path: "/finance",
+            component: FinanceManagerView,
+        },
+        {
+            name: "Transaktionen",
+            path: "/finance/transactions",
+            component: TransactionsView,
+        },
+        {
+            name: "TransCategories",
+            path: "/finance/categories",
+            component: TransCategoriesView,
+        },
+        {
+            name: "Konto",
+            path: "/finance/accounts",
+            component: FinanceAccountView,
+        },
+    ],
 });
 
 router.beforeEach((to, from, next) => {
-  const store = useUserStore();
-  console.log(store.userLoggedIn);
-  if (!store.userLoggedIn && to.name !== "Login") {
-    return next({ name: "Login" });
-  }
-  next();
+    const store = useUserStore();
+    console.log(store.userLoggedIn);
+    if (!store.userLoggedIn && to.name !== "Login") {
+        return next({ name: "Login" });
+    }
+    next();
 });
 
 export default router;
