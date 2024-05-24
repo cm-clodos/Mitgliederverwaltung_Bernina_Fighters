@@ -1,8 +1,8 @@
 <template>
     <main>
         <h1 class="view-title" data-test="site-title">Verwaltung</h1>
-        <h1> Komponenten: Erstellung Transkategorien und Erstellung Bankkonten</h1>
         <TransCategories />
+        <FinanceAccount />
     </main>
 
 
@@ -10,11 +10,13 @@
 
 <script>
 import TransCategories from '@/components/TransCategories.vue';
+import FinanceAccount from '@/components/FinanceAccount.vue';
 export default {
     name: 'FinanceManagerAdminView',
 
     components: {
-        TransCategories
+        TransCategories,
+        FinanceAccount
 
     },
     data() {
