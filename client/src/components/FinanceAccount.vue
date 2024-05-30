@@ -14,12 +14,12 @@
                                 <div class="mb-3">
                                     <label for="accountName" class="form-label">Name</label>
                                     <input data-test="input-accountname" type="text" class="form-control"
-                                        id="AccountName">
+                                        id="AccountName" v-model="model.account.name">
                                 </div>
                                 <div class="mb-3">
                                     <label for="accountBalance" class="form-label">Betrag</label>
                                     <input data-test="input-accountBalance" type="number" class="form-control"
-                                        id="accountBalance">
+                                        id="accountBalance" v-model="model.account.balance">
                                 </div>
 
                             </div>
