@@ -27,6 +27,21 @@
           </div>
         </div>
       </form>
+      <!-- List of categories -->
+      <div class="card mt-3">
+        <div class="card-header">
+          <h4>Kategorienliste</h4>
+        </div>
+        <div class="card-body">
+          <ul class="list-group">
+            <li v-for="category in categories" :key="category.id"
+              class="list-group-item d-flex justify-content-between align-items-center">
+              {{ category.name }}
+              <button @click="deleteTransCategory(category.id)" class="btn btn-danger btn-sm">Löschen</button>
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
   </main>
 
@@ -54,10 +69,14 @@ export default {
         category: {
           name: ''
         }
-      }
+      },
+      categories: []
 
     };
 
+  },
+  mounted() {
+    this.getAllTransCategories();
   },
   validations() {
     return {
@@ -69,13 +88,48 @@ export default {
     }
   },
   methods: {
+    async getAllTransCategories() {
+      axios.get('/finance/categories')
+        .then(res => {
+          console.log(res.data);
+          this.categories = res.data;
+        })
+        .catch(error => {
+          console.log(error)
+          if ([500].includes(error.response.status)) {
+            this.toast.error(error.response.data.message);
+          } else {
+            console.log("Unexpected error: " + error.response.status);
+          }
+        });
 
-    addTransCategory() {
+    },
+    async deleteTransCategory(id) {
+      axios.delete(`/finance/categories/${id}`)
+        .then(res => {
+          if (res.status === 202) {
+            this.toast.success(res.data.message);
+            this.getAllTransCategories();
+          }
+        })
+        .catch(error => {
+          console.log(error);
+          if ([404, 500].includes(error.response.status)) {
+            this.toast.error(error.response.data.message);
+          } else {
+            console.log("Unexpected error: " + error.response.status);
+          }
+        });
+    },
+    async addTransCategory() {
       axios.post('/finance/categories', this.model.category)
         .then(res => {
           if (res.status === 201) {
             this.toast.success(res.data.message);
-            this.$refs.form.reset();
+            this.model.category.name = ''; // Reset the category name
+            this.v$.model.category.name.$reset(); // Reset the validation state
+            this.getAllTransCategories();
+
           }
         })
         .catch(error => {
@@ -100,7 +154,7 @@ export default {
       const valid = await this.v$.$validate();
       if (valid) {
         try {
-          this.addTransCategory();
+          await this.addTransCategory();
         } catch (err) {
           this.toast.error("Fehler beim übermitteln des Formulars!")
           console.log(err)
@@ -110,10 +164,11 @@ export default {
 
       }
     }
-  }
-
-
+  },
 }
+
+
+
 </script>
 
 <style lang="scss" scoped></style>
