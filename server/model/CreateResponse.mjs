@@ -10,6 +10,7 @@ const messageCodes = {
     "tere-202": "Trikot erfolgreich gelöscht",
     "ficatre-201": "Finanzkategorie erfolgreich hinzugefügt",
     "ficatre-202": "Finanzkategorie erfolgreich gelöscht",
+    "fiacctre-201": "Finanzkonto erfolgreich hinzugefügt",
 };
 
 class CreateResponse {

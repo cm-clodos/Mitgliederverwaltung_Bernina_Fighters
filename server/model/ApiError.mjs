@@ -13,6 +13,8 @@ const errorCodes = {
     "au-403": "Du bist nicht autorisiert.",
     "fce-400": "Finanzkategorie existiert bereits",
     "fce-404": "Finanzkategorie wurde nicht gefunden",
+    "fae-400": "Finanzkonto existiert bereits",
+    "fae-404": "Finanzkonto wurde nicht gefunden",
 };
 
 class ApiError {

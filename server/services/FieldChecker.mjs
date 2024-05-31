@@ -150,3 +150,34 @@ export function checkTransCategoryName(transCategoryName) {
     }
     return error;
 }
+
+export function checkAccountName(accountName) {
+    const error = {};
+    if (!accountName || typeof accountName !== "string" || accountName.trim().length === 0) {
+        error.name = "Finanzkonto ist erforderlich.";
+    } else if (accountName.trim().length >= 50) {
+        error.name = "Finanzkonto darf maximal 50 Zeichen lang sein.";
+    }
+    return error;
+}
+
+export function checkAccountBalance(balance) {
+    const error = {};
+    console.log("Type of balance:", typeof balance);
+    console.log("Value of balance:", balance);
+
+    // Convert balance to number if it's a string
+    const numericBalance = typeof balance === "string" ? parseFloat(balance) : balance;
+
+    // Check if balance is a valid number
+    if (typeof numericBalance !== "number" || isNaN(numericBalance)) {
+        error.balance = "Kontostand ist ungültig.";
+    }
+
+    // Check if balance is present (not null or empty string)
+    if (balance === "" || balance === null || balance === undefined) {
+        error.balance = "Kontostand ist erforderlich.";
+    }
+
+    return error;
+}

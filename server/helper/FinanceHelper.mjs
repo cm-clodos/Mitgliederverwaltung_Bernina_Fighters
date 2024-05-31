@@ -35,5 +35,25 @@ class FinanceHelper {
             throw error;
         }
     }
+
+    async getAllAccounts() {
+        let sql = "SELECT * FROM accounts";
+        sql += " ORDER BY account_name ASC";
+        try {
+            const res = await this.databaseConnector.query(sql, null);
+            return res.data;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async addAccount(account) {
+        const sql = "INSERT INTO accounts (account_name, balance) VALUES (?, ?)";
+        try {
+            return await this.databaseConnector.query(sql, [account.name, account.balance]);
+        } catch (error) {
+            throw error;
+        }
+    }
 }
 export default FinanceHelper;
