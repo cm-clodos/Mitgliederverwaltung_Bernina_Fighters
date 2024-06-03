@@ -1,7 +1,13 @@
-import { checkAccountName, checkAccountBalance, trimData } from "../services/FieldChecker.mjs";
+import {
+    checkAccountName,
+    checkAccountBalance,
+    trimData,
+    capitalizeFirstLetter,
+} from "../services/FieldChecker.mjs";
 
 export function validateAccountData(req, res, next) {
     req.body = trimData(req.body);
+    req.body.name = capitalizeFirstLetter(req.body.name);
 
     const { name, balance } = req.body;
 

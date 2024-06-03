@@ -1,7 +1,12 @@
-import { checkTransCategoryName, trimData } from "../services/FieldChecker.mjs";
+import {
+    checkTransCategoryName,
+    trimData,
+    capitalizeFirstLetter,
+} from "../services/FieldChecker.mjs";
 
 export function validateTransCategoryData(req, res, next) {
     req.body = trimData(req.body);
+    req.body.name = capitalizeFirstLetter(req.body.name);
 
     const { name } = req.body;
 

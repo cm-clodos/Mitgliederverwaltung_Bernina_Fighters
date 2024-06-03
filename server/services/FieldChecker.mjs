@@ -117,6 +117,11 @@ export function trimData(data) {
     return trimmedData;
 }
 
+export function capitalizeFirstLetter(word) {
+    if (!word) return "";
+    return word.charAt(0).toUpperCase() + word.slice(1);
+}
+
 export function formatFirstLetterOfNames(name) {
     name = name.trim();
     name = name.toLowerCase();
@@ -165,6 +170,11 @@ export function checkAccountBalance(balance) {
     const error = {};
     console.log("Type of balance:", typeof balance);
     console.log("Value of balance:", balance);
+
+    const specialCharsRegex = /[^0-9.-]/; // Erlaubt nur Ziffern, Punkt und Minuszeichen
+    if (specialCharsRegex.test(balance)) {
+        error.balance = "Ungültige Zeichen im Kontostand.";
+    }
 
     // Convert balance to number if it's a string
     const numericBalance = typeof balance === "string" ? parseFloat(balance) : balance;

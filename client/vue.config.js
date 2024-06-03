@@ -3,7 +3,8 @@ module.exports = defineConfig({
     transpileDependencies: true,
     devServer: {
         //server: defineServerConfiguration(),
-        //proxy: process.env.VUE_APP_API_URI,
+        proxy: process.env.VUE_APP_API_URI,
+        /*
         proxy: {
             // Allgemeine API-Proxy-Regel
             "^/": {
@@ -12,5 +13,6 @@ module.exports = defineConfig({
                 ws: false, // Deaktivieren von WebSocket-Proxys
             },
         },
+        */
     },
 });

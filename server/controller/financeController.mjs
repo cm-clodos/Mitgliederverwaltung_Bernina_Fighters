@@ -71,6 +71,8 @@ const handleNewAccount = async (req, res) => {
     } catch (error) {
         console.log(error);
         if (error.code === "ER_DUP_ENTRY") return res.status(400).json(new ApiError("fae-400"));
+        if (error.code === "ER_WARN_DATA_OUT_OF_RANGE")
+            return res.status(422).json(new ApiError("fae-422"));
         return res.status(500).json(new ApiError("ee-999"));
     }
 };
