@@ -4,20 +4,19 @@
 @import "memberExport";
 @import "pagination";
 @import "header";
+@import "financeAdmin";
 
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 html {
-  scroll-behavior: smooth;
+    scroll-behavior: smooth;
 }
 
-.view-title{
-font-size: 2rem;
-  margin: 1rem;
+.view-title {
+    font-size: 2rem;
+    margin: 1rem;
 }
-
-

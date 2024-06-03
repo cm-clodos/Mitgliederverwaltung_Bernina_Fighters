@@ -1,0 +1,28 @@
+.account-details {
+    display: flex;
+    justify-content: space-between;
+    width: 50%;
+}
+
+.category-details {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 50%;
+}
+
+.account-name {
+    font-weight: bold;
+}
+
+.account-balance {
+    font-weight: bold;
+}
+
+.positive-balance {
+    color: green;
+}
+
+.negative-balance {
+    color: red;
+}

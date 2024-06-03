@@ -33,11 +33,14 @@
           <h4>Kategorienliste</h4>
         </div>
         <div class="card-body">
-          <ul class="list-group">
+          <ul class="list-group ">
             <li v-for="category in categories" :key="category.id"
               class="list-group-item d-flex justify-content-between align-items-center">
-              {{ category.name }}
-              <button @click="deleteTransCategory(category.id)" class="btn btn-danger btn-sm">Löschen</button>
+              <div class="category-details">
+                <span>{{ category.name }}</span>
+                <span><button @click="deleteTransCategory(category.id)"
+                    class="btn btn-danger btn-sm ">Löschen</button></span>
+              </div>
             </li>
           </ul>
         </div>
@@ -91,7 +94,6 @@ export default {
     async getAllTransCategories() {
       axios.get('/finance/categories')
         .then(res => {
-          console.log(res.data);
           this.categories = res.data;
         })
         .catch(error => {
@@ -126,8 +128,8 @@ export default {
         .then(res => {
           if (res.status === 201) {
             this.toast.success(res.data.message);
-            this.model.category.name = ''; // Reset the category name
-            this.v$.model.category.name.$reset(); // Reset the validation state
+            this.model.category.name = '';
+            this.v$.model.category.name.$reset();
             this.getAllTransCategories();
 
           }
