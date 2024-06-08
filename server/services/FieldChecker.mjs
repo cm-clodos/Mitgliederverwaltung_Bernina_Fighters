@@ -118,8 +118,10 @@ export function trimData(data) {
 }
 
 export function capitalizeFirstLetter(word) {
-    if (!word) return "";
-    return word.charAt(0).toUpperCase() + word.slice(1);
+    if (typeof word !== "string" || word.length === 0) {
+        return word;
+    }
+    return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
 }
 
 export function formatFirstLetterOfNames(name) {
@@ -168,23 +170,17 @@ export function checkAccountName(accountName) {
 
 export function checkAccountBalance(balance) {
     const error = {};
-    console.log("Type of balance:", typeof balance);
-    console.log("Value of balance:", balance);
-
     const specialCharsRegex = /[^0-9.-]/; // Erlaubt nur Ziffern, Punkt und Minuszeichen
     if (specialCharsRegex.test(balance)) {
         error.balance = "Ungültige Zeichen im Kontostand.";
     }
 
-    // Convert balance to number if it's a string
     const numericBalance = typeof balance === "string" ? parseFloat(balance) : balance;
 
-    // Check if balance is a valid number
     if (typeof numericBalance !== "number" || isNaN(numericBalance)) {
         error.balance = "Kontostand ist ungültig.";
     }
 
-    // Check if balance is present (not null or empty string)
     if (balance === "" || balance === null || balance === undefined) {
         error.balance = "Kontostand ist erforderlich.";
     }

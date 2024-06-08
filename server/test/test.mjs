@@ -24,7 +24,11 @@ import {
     formatFirstLetterOfNames,
     trimData,
     checkTransCategoryName,
+    capitalizeFirstLetter,
+    checkAccountName,
+    checkAccountBalance,
 } from "../services/FieldChecker.mjs";
+import Account from "../model/Account.mjs";
 
 const memberHelper = new MemberHelper("test");
 const trikotHelper = new TrikotHelper("test");
@@ -368,6 +372,25 @@ describe("formatFirstLetterOfNames", () => {
     });
 });
 
+describe("capitalizeFirstLetter", () => {
+    it("should capitalize the first letter of a given word", function () {
+        const capitalizedWord = capitalizeFirstLetter("test");
+        assert.strictEqual(capitalizedWord, "Test");
+    });
+    it("should capitalize the first letter of a given word", function () {
+        const capitalizedWord = capitalizeFirstLetter("TEST");
+        assert.strictEqual(capitalizedWord, "Test");
+    });
+    it("should capitalize the first letter of a given word", function () {
+        const capitalizedWord = capitalizeFirstLetter("tEST");
+        assert.strictEqual(capitalizedWord, "Test");
+    });
+    it("should capitalize the first letter of a given word", function () {
+        const capitalizedWord = capitalizeFirstLetter("tEst");
+        assert.strictEqual(capitalizedWord, "Test");
+    });
+});
+
 describe("checkTranscategoryName from validateTransCategoryData", () => {
     it("should return an error if the categoryname is missing", () => {
         const error = checkTransCategoryName("");
@@ -382,6 +405,42 @@ describe("checkTranscategoryName from validateTransCategoryData", () => {
     });
     it("should not return an error if the category is valid", () => {
         const error = checkTransCategoryName("Mitgliederbeiträge");
+        assert.deepEqual(error, {});
+    });
+});
+
+describe("checkAccountName from validateAccountData", () => {
+    it("should return an error if the accountname is missing", () => {
+        const error = checkAccountName("");
+        assert.deepEqual(error, { name: "Finanzkonto ist erforderlich." });
+    });
+    it("should return an error if the accountname is longer than 50 characters", () => {
+        const error = checkAccountName(
+            "ThisAccountnameislongerthanfiftycharacterssoitshouldtriggeranerror"
+        );
+        assert.deepEqual(error, { name: "Finanzkonto darf maximal 50 Zeichen lang sein." });
+    });
+    it("should not return an error if the accountname is valid", () => {
+        const error = checkAccountName("Bankkonto");
+        assert.deepEqual(error, {});
+    });
+});
+
+describe("checkAccountBalance from validateAccountData", () => {
+    it("should return an error if the accountbalance is missing", () => {
+        const error = checkAccountBalance("");
+        assert.deepEqual(error, { balance: "Kontostand ist erforderlich." });
+    });
+    it("should return an error if invalid characters are used", () => {
+        const error = checkAccountBalance("+1000");
+        assert.deepEqual(error, { balance: "Ungültige Zeichen im Kontostand." });
+    });
+    it("should return an error if the accountbalance is invalid", () => {
+        const error = checkAccountBalance("invalidbalance");
+        assert.deepEqual(error, { balance: "Kontostand ist ungültig." });
+    });
+    it("should not return an error if the accountbalance is valid", () => {
+        const error = checkAccountBalance(1000);
         assert.deepEqual(error, {});
     });
 });
@@ -732,6 +791,66 @@ describe("Testing FinanceHelper for checking database operations", () => {
         });
         it("should not delete a transCategory if id does not exist", async () => {
             const res = await financeHelper.deleteTransCategory(-1);
+            assert.strictEqual(res.data.affectedRows, 0);
+        });
+    });
+
+    describe("addAccount", async () => {
+        let accountId;
+        const account = new Account("TestAccount", 1000);
+
+        it("should return an object with affectedRows 1", async function () {
+            const res = await financeHelper.addAccount(account);
+            accountId = parseInt(res.data.insertId);
+            assert.strictEqual(typeof res, "object");
+            assert.strictEqual(res.data.affectedRows, 1);
+        });
+
+        it("should return duple entry", async function () {
+            try {
+                await financeHelper.addAccount(account);
+            } catch (error) {
+                assert.strictEqual(error.code, "ER_DUP_ENTRY");
+            }
+        });
+
+        it("should return data out of range", async function () {
+            try {
+                await financeHelper.addAccount(new Account("TestAccount", 100000000000000000));
+            } catch (error) {
+                assert.strictEqual(error.code, "ER_WARN_DATA_OUT_OF_RANGE");
+            }
+        });
+
+        describe("getAllAccounts", function () {
+            it("should return an array of accounts", async function () {
+                const accounts = await financeHelper.getAllAccounts();
+                assert.isArray(accounts, "accounts is an array");
+            });
+        });
+
+        after(async function () {
+            console.log("zeile 835", accountId);
+            if (accountId) {
+                await financeHelper.deleteAccountById(accountId);
+            }
+        });
+    });
+    describe("deleteAccountById", async () => {
+        let accountId;
+        before(async () => {
+            const account = new Account("TestAccount2", 1000);
+            const res = await financeHelper.addAccount(account);
+            accountId = parseInt(res.data.insertId);
+        });
+        it("should delete an account by id", async () => {
+            const res = await financeHelper.deleteAccountById(accountId);
+            assert.strictEqual(typeof res, "object");
+            assert.strictEqual(res.data.affectedRows, 1);
+            assert.strictEqual(res.success, true);
+        });
+        it("should not delete an account if id does not exist", async () => {
+            const res = await financeHelper.deleteAccountById(-1);
             assert.strictEqual(res.data.affectedRows, 0);
         });
     });

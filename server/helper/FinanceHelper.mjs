@@ -55,5 +55,14 @@ class FinanceHelper {
             throw error;
         }
     }
+
+    async deleteAccountById(id) {
+        const sql = "DELETE FROM accounts WHERE account_id = ?";
+        try {
+            return await this.databaseConnector.query(sql, [id]);
+        } catch (error) {
+            throw error;
+        }
+    }
 }
 export default FinanceHelper;
