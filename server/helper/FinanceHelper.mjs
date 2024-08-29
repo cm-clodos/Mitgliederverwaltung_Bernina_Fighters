@@ -64,5 +64,94 @@ class FinanceHelper {
             throw error;
         }
     }
+
+    async getAllTransactionsFromAccount(accountId) {
+        let sql = "SELECT * FROM transactions WHERE account_id = ?";
+        sql += "ORDER BY trans_date DESC";
+        try {
+            const res = await this.databaseConnector.query(sql, [accountId]);
+            return res.data;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async getTransactionById(transId) {
+        const sql = "SELECT * FROM transactions WHERE id = ?";
+        try {
+            const res = await this.databaseConnector.query(sql, [transId]);
+            return res.data;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async addTransaction(transaction) {
+        const sql =
+            "INSERT INTO transactions (account_id, transCategory_id, trans_date, type, amount, description) VALUES (?, ?, ?, ?, ?, ?)";
+        try {
+            return await this.databaseConnector.query(sql, [
+                transaction.account_id,
+                transaction.transCategory_id,
+                transaction.trans_date,
+                transaction.type,
+                transaction.amount,
+                transaction.description,
+            ]);
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async updateTransactionById(transId, transaction) {
+        const data = [
+            transaction.account_id,
+            transaction.transCategory_id,
+            transaction.trans_date,
+            transaction.type,
+            transaction.amount,
+            transaction.description,
+            transId,
+        ];
+
+        const sql =
+            "UPDATE transactions SET account_id = ?, transCategory_id = ?, trans_date = ?, type = ?, amount = ?, description = ? WHERE id = ?";
+        try {
+            return await this.databaseConnector.query(sql, data);
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async deleteTransactionById(transId) {
+        const sql = "DELETE FROM transactions WHERE id = ?";
+        try {
+            return await this.databaseConnector.query(sql, [transId]);
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async getAllTransactionTypeIncomeFromAccount(accountId) {
+        let sql = "SELECT * FROM transactions WHERE account_id = ? AND type = 'Einnahme'";
+        sql += "ORDER BY trans_date DESC";
+        try {
+            const res = await this.databaseConnector.query(sql, accountId);
+            return res.data;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async getAllTransactionTypeExpenseFromAccount(accountId) {
+        let sql = "SELECT * FROM transactions WHERE account_id = ? AND type = 'Ausgabe'";
+        sql += "ORDER BY trans_date DESC";
+        try {
+            const res = await this.databaseConnector.query(sql, accountId);
+            return res.data;
+        } catch (error) {
+            throw error;
+        }
+    }
 }
 export default FinanceHelper;

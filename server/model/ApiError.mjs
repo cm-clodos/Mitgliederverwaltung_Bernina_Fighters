@@ -16,6 +16,7 @@ const errorCodes = {
     "fae-400": "Finanzkonto existiert bereits",
     "fae-404": "Finanzkonto wurde nicht gefunden",
     "fae-422": "Betrag ist zu groß",
+    "fte-404": "Finanztransaktion wurde nicht gefunden",
 };
 
 class ApiError {

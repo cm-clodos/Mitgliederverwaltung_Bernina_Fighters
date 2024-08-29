@@ -11,6 +11,9 @@ const messageCodes = {
     "ficatre-201": "Finanzkategorie erfolgreich hinzugefügt",
     "ficatre-202": "Finanzkategorie erfolgreich gelöscht",
     "fiacctre-201": "Finanzkonto erfolgreich hinzugefügt",
+    "fitransre-201": "Transaktion erfolgreich hinzugefügt",
+    "fitransre-200": "Transaktion erfolgreich aktualisiert",
+    "fitransre-202": "Transaktion erfolgreich gelöscht",
 };
 
 class CreateResponse {

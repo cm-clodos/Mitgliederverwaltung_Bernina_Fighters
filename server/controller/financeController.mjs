@@ -1,6 +1,7 @@
 import FinanceHelper from "../helper/FinanceHelper.mjs";
 import TransCategory from "../model/TransCategory.mjs";
 import Account from "../model/Account.mjs";
+import Transaction from "../model/Transaction.mjs";
 import CreateResponse from "../model/CreateResponse.mjs";
 import ApiError from "../model/ApiError.mjs";
 
@@ -77,10 +78,122 @@ const handleNewAccount = async (req, res) => {
     }
 };
 
+const handleGetAllTransactionsFromAccount = async (req, res) => {
+    try {
+        const financeHelper = new FinanceHelper();
+        const transactionList = await financeHelper.getAllTransactionsFromAccount(req.params.id);
+        res.status(200).json(transactionList);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json(new ApiError("ee-999"));
+    }
+};
+
+const handleGetAllTransactionsTypeIncomeFromAccount = async (req, res) => {
+    try {
+        const financeHelper = new FinanceHelper();
+        const incomeList = await financeHelper.getAllTransactionTypeIncomeFromAccount(
+            req.params.id
+        );
+        res.status(200).json(incomeList);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json(new ApiError("ee-999"));
+    }
+};
+
+const handleGetAllTransactionsTypeExpenseFromAccount = async (req, res) => {
+    try {
+        const financeHelper = new FinanceHelper();
+        const expenseList = await financeHelper.getAllTransactionTypeExpenseFromAccount(
+            req.params.id
+        );
+        res.status(200).json(expenseList);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json(new ApiError("ee-999"));
+    }
+};
+
+const handleNewTransaction = async (req, res) => {
+    try {
+        const financeHelper = new FinanceHelper();
+        console.log(req.body);
+        const transaction = new Transaction(
+            req.body.account_id,
+            req.body.transCategory_id,
+            req.body.trans_date,
+            req.body.type,
+            req.body.amount,
+            req.body.description
+        );
+
+        const result = await financeHelper.addTransaction(transaction);
+        if (result.success && result.data.affectedRows === 1) {
+            res.status(201).json(new CreateResponse("fitransre-201"));
+        } else {
+            res.status(500).json(new ApiError("ee-999"));
+        }
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+const handleGetTransactionById = async (req, res) => {
+    try {
+        const financeHelper = new FinanceHelper();
+        const transaction = await financeHelper.getTransactionById(req.params.id);
+        res.status(200).json(transaction);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json(new ApiError("ee-999"));
+    }
+};
+
+const handleUpdateTransactionById = async (req, res) => {
+    try {
+        const financeHelper = new FinanceHelper();
+        const transaction = new Transaction(
+            req.body.account_id,
+            req.body.transCategory_id,
+            req.body.trans_date,
+            req.body.type,
+            req.body.amount,
+            req.body.description
+        );
+        const result = await financeHelper.updateTransactionById(req.params.id, transaction);
+
+        if (result.data.affectedRows === 0) return res.status(404).json(new ApiError("fte-404"));
+        return res.status(200).json(new CreateResponse("fitransre-200"));
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json(new ApiError("ee-999"));
+    }
+};
+
+const handleDeleteTransactionById = async (req, res) => {
+    try {
+        const financeHelper = new FinanceHelper();
+        const result = await financeHelper.deleteTransactionById(req.params.id);
+        if (result.data.affectedRows === 0) return res.status(404).json(new ApiError("fte-404"));
+        return res.status(202).json(new CreateResponse("fitransre-202"));
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json(new ApiError("ee-999"));
+    }
+};
+
 export default {
     handleGetAllTransCategories,
     handleNewTransCategory,
     handleDeleteTransCategory,
     handleGetAllAccounts,
     handleNewAccount,
+    handleGetAllTransactionsFromAccount,
+    handleGetAllTransactionsTypeIncomeFromAccount,
+    handleGetAllTransactionsTypeExpenseFromAccount,
+    handleNewTransaction,
+    handleGetTransactionById,
+    handleUpdateTransactionById,
+    handleDeleteTransactionById,
 };

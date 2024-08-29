@@ -16,11 +16,25 @@ router.post(
 router.delete("/categories/:id", financeController.handleDeleteTransCategory);
 
 router.get("/accounts", financeController.handleGetAllAccounts);
+router.get("/accounts/:id/transactions", financeController.handleGetAllTransactionsFromAccount);
+router.get(
+    "/accounts/:id/transactions/income",
+    financeController.handleGetAllTransactionsTypeIncomeFromAccount
+);
+router.get(
+    "/accounts/:id/transactions/expense",
+    financeController.handleGetAllTransactionsTypeExpenseFromAccount
+);
 router.post(
     "/accounts",
     accountDataSanitizer,
     validateAccountData,
     financeController.handleNewAccount
 );
+router.get("/transaction/:id", financeController.handleGetTransactionById);
+router.put("/transaction/:id", financeController.handleUpdateTransactionById);
+router.delete("/transaction/:id", financeController.handleDeleteTransactionById);
+router.post("/transaction/income", financeController.handleNewTransaction);
+router.post("/transaction/expense", financeController.handleNewTransaction);
 
 export default router;
