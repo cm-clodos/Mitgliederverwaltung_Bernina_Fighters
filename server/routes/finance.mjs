@@ -34,7 +34,7 @@ router.post(
 router.get("/transaction/:id", financeController.handleGetTransactionById);
 router.put("/transaction/:id", financeController.handleUpdateTransactionById);
 router.delete("/transaction/:id", financeController.handleDeleteTransactionById);
-router.post("/transaction/income", financeController.handleNewTransaction);
-router.post("/transaction/expense", financeController.handleNewTransaction);
+router.post("/transaction", financeController.handleNewTransaction);
+//router.post("/transaction/expense", financeController.handleNewTransaction);
 
 export default router;
