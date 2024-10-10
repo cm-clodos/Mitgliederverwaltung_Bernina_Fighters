@@ -2,7 +2,12 @@ import express from "express";
 import financeController from "../controller/financeController.mjs";
 import { validateTransCategoryData } from "../middleware/validateTransCategoryData.mjs";
 import { validateAccountData } from "../middleware/validateAccountData.mjs";
-import { transCategoryDataSanitizer, accountDataSanitizer } from "../middleware/inputSanitizer.mjs";
+import { validateTransactionData } from "../middleware/validateTransactionData.mjs";
+import {
+    transCategoryDataSanitizer,
+    accountDataSanitizer,
+    transactionDataSanitizer,
+} from "../middleware/inputSanitizer.mjs";
 
 const router = express.Router();
 
@@ -32,9 +37,19 @@ router.post(
     financeController.handleNewAccount
 );
 router.get("/transaction/:id", financeController.handleGetTransactionById);
-router.put("/transaction/:id", financeController.handleUpdateTransactionById);
+router.put(
+    "/transaction/:id",
+    transactionDataSanitizer,
+    validateTransactionData,
+    financeController.handleUpdateTransactionById
+);
 router.delete("/transaction/:id", financeController.handleDeleteTransactionById);
-router.post("/transaction", financeController.handleNewTransaction);
+router.post(
+    "/transaction",
+    transactionDataSanitizer,
+    validateTransactionData,
+    financeController.handleNewTransaction
+);
 //router.post("/transaction/expense", financeController.handleNewTransaction);
 
 export default router;

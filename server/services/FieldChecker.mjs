@@ -187,3 +187,75 @@ export function checkAccountBalance(balance) {
 
     return error;
 }
+// Checker for Transaction
+export function checkTransDate(transDate) {
+    const error = {};
+    if (!transDate || typeof transDate !== "string" || transDate.trim().length === 0) {
+        error.entry_date = "Transaktionsdatum ist erforderlich.";
+    } else if (transDate.trim().length > 10) {
+        error.entry_date = "Transaktionsdatum darf maximal 10 Zeichen lang sein.";
+    }
+    return error;
+}
+
+export function checkType(type) {
+    const error = {};
+    if (!type || typeof type !== "string" || type.trim().length === 0) {
+        error.type = "Transaktionstyp ist erforderlich.";
+    } else if (type !== "Einnahme" && type !== "Ausgabe") {
+        error.type = "Transaktionstyp muss entweder 'Einnahme' oder 'Ausgabe' sein.";
+    }
+    return error;
+}
+
+export function checkTransactionAmount(amount) {
+    const error = {};
+    const specialCharsRegex = /[^0-9.-]/; // Erlaubt nur Ziffern, Punkt und Minuszeichen
+    if (specialCharsRegex.test(amount)) {
+        error.amount = "Ungültige Zeichen im Betrag.";
+    }
+
+    const numericAmount = typeof amount === "string" ? parseFloat(amount) : amount;
+
+    if (typeof numericAmount !== "number" || isNaN(numericAmount)) {
+        error.amount = "Betrag ist ungültig.";
+    }
+
+    if (amount === "" || amount === null || amount === undefined) {
+        error.amount = "Betrag ist erforderlich.";
+    }
+
+    return error;
+}
+
+export function checkAccountId(account_id) {
+    const error = {};
+
+    if (!account_id || isNaN(Number(account_id))) {
+        error.account_id = "Account-ID muss eine gültige Nummer sein.";
+    }
+
+    return error;
+}
+
+export function checkTransCategoryId(transCategory_id) {
+    const error = {};
+
+    if (!transCategory_id || isNaN(Number(transCategory_id))) {
+        error.transCategory_id = "Kategorie-ID muss eine gültige Nummer sein.";
+    }
+
+    return error;
+}
+
+export function checkDescription(description) {
+    const error = {};
+
+    if (!description || typeof description !== "string" || description.trim().length === 0) {
+        error.description = "Beschreibung ist erforderlich.";
+    } else if (description.trim().length > 50) {
+        error.description = "Beschreibung darf maximal 50 Zeichen lang sein.";
+    }
+
+    return error;
+}
