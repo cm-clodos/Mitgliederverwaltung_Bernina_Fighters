@@ -80,7 +80,7 @@
                             <div class="col-md-6 offset-md-6">
                                 <div class="mb-3">
                                     <label for="amount" class="form-label">Betrag</label>
-                                    <input data-test="input-amount" type="number" class="form-control" id="amount"
+                                    <input data-test="input-amount" type="text" class="form-control" id="amount"
                                         value="" v-model="model.transaction.amount">
                                     <span v-if="v$.model.transaction.amount.$error" data-test="error-message-amount"
                                         :class="`${v$.model.transaction.amount.$error ? 'error-message' : ''}`">
