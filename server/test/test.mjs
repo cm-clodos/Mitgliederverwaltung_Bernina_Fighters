@@ -2,7 +2,13 @@ import { assert } from "chai";
 import { describe, it } from "mocha";
 import MemberHelper from "../helper/MemberHelper.mjs";
 import Member from "../model/Member.mjs";
-import { memberDataSanitzer, trikotDataSanitizer } from "../middleware/inputSanitizer.mjs";
+import {
+    memberDataSanitzer,
+    trikotDataSanitizer,
+    accountDataSanitizer,
+    transCategoryDataSanitizer,
+    transactionDataSanitizer,
+} from "../middleware/inputSanitizer.mjs";
 import TrikotHelper from "../helper/TrikotHelper.mjs";
 import Trikot from "../model/Trikot.mjs";
 import EncryptionService from "../services/EncryptionService.mjs";
@@ -27,6 +33,12 @@ import {
     capitalizeFirstLetter,
     checkAccountName,
     checkAccountBalance,
+    checkTransDate,
+    checkType,
+    checkTransactionAmount,
+    checkAccountId,
+    checkTransCategoryId,
+    checkDescription,
 } from "../services/FieldChecker.mjs";
 import Account from "../model/Account.mjs";
 
@@ -88,6 +100,72 @@ describe("check the trikotDataSanitizer", () => {
         };
 
         trikotDataSanitizer(req, null, () => {
+            assert.deepEqual(req.body, expected);
+        });
+    });
+});
+
+describe("transactionDataSanitizer", () => {
+    it("should sanitize transaction data fields", () => {
+        const req = {
+            body: {
+                amount: '<script>alert("XSS attack!");</script>',
+                description: "<b>Valid description</b>",
+                date: '2024-10-10<script>alert("XSS attack!");</script>',
+                categoryId: '<img src="not_an_image.jpg" onerror="alert(\'XSS attack!\');">',
+                accountId: '12345<script>alert("XSS attack!");</script>',
+                type: 'Einnahme<script>alert("XSS attack!");</script>',
+            },
+        };
+
+        const expected = {
+            amount: "",
+            description: "Valid description",
+            date: "2024-10-10",
+            categoryId: "",
+            accountId: "12345",
+            type: "Einnahme",
+        };
+
+        transactionDataSanitizer(req, null, () => {
+            assert.deepEqual(req.body, expected);
+        });
+    });
+});
+
+describe("transCategoryDataSanitizer", () => {
+    it("should sanitize transaction category data fields", () => {
+        const req = {
+            body: {
+                name: '<script>alert("XSS attack!");</script>',
+            },
+        };
+
+        const expected = {
+            name: "",
+        };
+
+        transCategoryDataSanitizer(req, null, () => {
+            assert.deepEqual(req.body, expected);
+        });
+    });
+});
+
+describe("accountDataSanitizer", () => {
+    it("should sanitize account data fields", () => {
+        const req = {
+            body: {
+                name: "<b>Valid Account</b>",
+                balance: '<script>alert("XSS attack!");</script>',
+            },
+        };
+
+        const expected = {
+            name: "Valid Account",
+            balance: "",
+        };
+
+        accountDataSanitizer(req, null, () => {
             assert.deepEqual(req.body, expected);
         });
     });
@@ -441,6 +519,210 @@ describe("checkAccountBalance from validateAccountData", () => {
     });
     it("should not return an error if the accountbalance is valid", () => {
         const error = checkAccountBalance(1000);
+        assert.deepEqual(error, {});
+    });
+});
+
+describe("checkTransDate", () => {
+    it("should return an error if the transDate is missing", () => {
+        const error = checkTransDate("");
+        assert.deepEqual(error, { entry_date: "Transaktionsdatum ist erforderlich." });
+    });
+
+    it("should return an error if the transDate is not a string", () => {
+        const error = checkTransDate(1234567890);
+        assert.deepEqual(error, { entry_date: "Transaktionsdatum ist erforderlich." });
+    });
+
+    it("should return an error if the transDate exceeds 10 characters", () => {
+        const error = checkTransDate("2024-10-0123");
+        assert.deepEqual(error, {
+            entry_date: "Transaktionsdatum darf maximal 10 Zeichen lang sein.",
+        });
+    });
+
+    it("should not return an error if the transDate is valid and exactly 10 characters", () => {
+        const error = checkTransDate("2024-10-01");
+        assert.deepEqual(error, {});
+    });
+
+    it("should return an error if the transDate contains only spaces", () => {
+        const error = checkTransDate("          ");
+        assert.deepEqual(error, { entry_date: "Transaktionsdatum ist erforderlich." });
+    });
+});
+
+describe("checkType", () => {
+    it("should return an error if the type is missing", () => {
+        const error = checkType("");
+        assert.deepEqual(error, { type: "Transaktionstyp ist erforderlich." });
+    });
+
+    it("should return an error if the type is not a string", () => {
+        const error = checkType(123);
+        assert.deepEqual(error, { type: "Transaktionstyp ist erforderlich." });
+    });
+
+    it("should return an error if the type is only spaces", () => {
+        const error = checkType("   ");
+        assert.deepEqual(error, { type: "Transaktionstyp ist erforderlich." });
+    });
+
+    it("should return an error if the type is not 'Einnahme' or 'Ausgabe'", () => {
+        const error = checkType("Investition");
+        assert.deepEqual(error, {
+            type: "Transaktionstyp muss entweder 'Einnahme' oder 'Ausgabe' sein.",
+        });
+    });
+
+    it("should not return an error if the type is 'Einnahme'", () => {
+        const error = checkType("Einnahme");
+        assert.deepEqual(error, {});
+    });
+
+    it("should not return an error if the type is 'Ausgabe'", () => {
+        const error = checkType("Ausgabe");
+        assert.deepEqual(error, {});
+    });
+});
+
+describe("checkTransactionAmount", () => {
+    it("should return an error if the amount contains invalid characters", () => {
+        const error = checkTransactionAmount("12.34abc");
+        assert.deepEqual(error, { amount: "Ungültige Zeichen im Betrag." });
+    });
+
+    it("should return an error if the amount is not a valid number", () => {
+        const error = checkTransactionAmount("invalid");
+        assert.deepEqual(error, { amount: "Betrag ist ungültig." });
+    });
+
+    it("should return an error if the amount is an empty string", () => {
+        const error = checkTransactionAmount("");
+        assert.deepEqual(error, { amount: "Betrag ist erforderlich." });
+    });
+
+    it("should return an error if the amount is null", () => {
+        const error = checkTransactionAmount(null);
+        assert.deepEqual(error, { amount: "Betrag ist erforderlich." });
+    });
+
+    it("should return an error if the amount is undefined", () => {
+        const error = checkTransactionAmount(undefined);
+        assert.deepEqual(error, { amount: "Betrag ist erforderlich." });
+    });
+
+    it("should not return an error for a valid numeric string amount", () => {
+        const error = checkTransactionAmount("100.50");
+        assert.deepEqual(error, {});
+    });
+
+    it("should not return an error for a valid number amount", () => {
+        const error = checkTransactionAmount(100.5);
+        assert.deepEqual(error, {});
+    });
+
+    it("should not return an error for a negative amount", () => {
+        const error = checkTransactionAmount("-50");
+        assert.deepEqual(error, {});
+    });
+});
+
+describe("checkAccountId", () => {
+    it("should return an error if account_id is not provided", () => {
+        const error = checkAccountId("");
+        assert.deepEqual(error, { account_id: "Account-ID muss eine gültige Nummer sein." });
+    });
+
+    it("should return an error if account_id is null", () => {
+        const error = checkAccountId(null);
+        assert.deepEqual(error, { account_id: "Account-ID muss eine gültige Nummer sein." });
+    });
+
+    it("should return an error if account_id is undefined", () => {
+        const error = checkAccountId(undefined);
+        assert.deepEqual(error, { account_id: "Account-ID muss eine gültige Nummer sein." });
+    });
+
+    it("should return an error if account_id is not a number", () => {
+        const error = checkAccountId("abc123");
+        assert.deepEqual(error, { account_id: "Account-ID muss eine gültige Nummer sein." });
+    });
+
+    it("should not return an error if account_id is a valid number string", () => {
+        const error = checkAccountId("123");
+        assert.deepEqual(error, {});
+    });
+
+    it("should not return an error if account_id is a valid number", () => {
+        const error = checkAccountId(123);
+        assert.deepEqual(error, {});
+    });
+});
+
+describe("checkTransCategoryId", () => {
+    it("should return an error if transCategory_id is not provided", () => {
+        const error = checkTransCategoryId("");
+        assert.deepEqual(error, {
+            transCategory_id: "Kategorie-ID muss eine gültige Nummer sein.",
+        });
+    });
+
+    it("should return an error if transCategory_id is null", () => {
+        const error = checkTransCategoryId(null);
+        assert.deepEqual(error, {
+            transCategory_id: "Kategorie-ID muss eine gültige Nummer sein.",
+        });
+    });
+
+    it("should return an error if transCategory_id is undefined", () => {
+        const error = checkTransCategoryId(undefined);
+        assert.deepEqual(error, {
+            transCategory_id: "Kategorie-ID muss eine gültige Nummer sein.",
+        });
+    });
+
+    it("should return an error if transCategory_id is not a number", () => {
+        const error = checkTransCategoryId("abc123");
+        assert.deepEqual(error, {
+            transCategory_id: "Kategorie-ID muss eine gültige Nummer sein.",
+        });
+    });
+
+    it("should not return an error if transCategory_id is a valid number string", () => {
+        const error = checkTransCategoryId("123");
+        assert.deepEqual(error, {});
+    });
+
+    it("should not return an error if transCategory_id is a valid number", () => {
+        const error = checkTransCategoryId(123);
+        assert.deepEqual(error, {});
+    });
+});
+
+describe("checkDescription", () => {
+    it("should return an error if description is not provided", () => {
+        const error = checkDescription("");
+        assert.deepEqual(error, { description: "Beschreibung ist erforderlich." });
+    });
+
+    it("should return an error if description is null", () => {
+        const error = checkDescription(null);
+        assert.deepEqual(error, { description: "Beschreibung ist erforderlich." });
+    });
+
+    it("should return an error if description is undefined", () => {
+        const error = checkDescription(undefined);
+        assert.deepEqual(error, { description: "Beschreibung ist erforderlich." });
+    });
+
+    it("should return an error if description is longer than 50 characters", () => {
+        const error = checkDescription("Lorem ipsum dolor sit amet, consectetur adipiscing elit.");
+        assert.deepEqual(error, { description: "Beschreibung darf maximal 50 Zeichen lang sein." });
+    });
+
+    it("should not return an error if description is valid and less than or equal to 50 characters", () => {
+        const error = checkDescription("Dies ist eine gültige Beschreibung.");
         assert.deepEqual(error, {});
     });
 });
