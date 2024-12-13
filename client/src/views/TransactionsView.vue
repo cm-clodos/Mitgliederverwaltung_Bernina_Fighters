@@ -2,6 +2,7 @@
     <main>
         <h1 class="view-title" data-test="site-title">Transaktionen</h1>
         <transaction-new></transaction-new>
+        <transaction-list></transaction-list>
     </main>
 
 
@@ -9,11 +10,13 @@
 
 <script>
 import TransactionNew from '@/components/TransactionNew.vue';
+import TransactionList from '@/components/TransactionList.vue';
 export default {
     name: 'TransactionsView',
 
     components: {
-        TransactionNew
+        TransactionNew,
+        TransactionList
 
     },
     data() {
