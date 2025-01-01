@@ -41,7 +41,7 @@
                                 <td data-cell="beschreibung"> {{ transaction.transaction_description }}</td>
                                 <td data-cell="betrag"> {{ transaction.transaction_amount }} Fr.-</td>
                                 <div class="actions-container">
-                                    <RouterLink :to="{ path: '/finance/transactions/new' }"
+                                    <RouterLink :to="{ path: '/finance/transactions/' + transaction.transaction_id }"
                                         class="btn btn-success action-btn">
                                         <font-awesome-icon class="action-icon" icon="pencil" />
                                     </RouterLink>

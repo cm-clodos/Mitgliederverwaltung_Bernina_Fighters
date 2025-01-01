@@ -13,6 +13,7 @@ import TransactionsView from "@/views/TransactionsView.vue";
 import TransactionNewView from "@/views/TransactionNewView.vue";
 import FinanceManagerAdminView from "@/views/FinanceManagerAdminView.vue";
 import useUserStore from "@/stores/user";
+import TransactionEditView from "@/views/TransactionEditView.vue";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -65,6 +66,11 @@ const router = createRouter({
             name: "Transaktion hinzufügen",
             path: "/finance/transactions/new",
             component: TransactionNewView,
+        },
+        {
+            name: "Transaktion bearbeiten",
+            path: "/finance/transactions/:id",
+            component: TransactionEditView,
         },
         {
             name: "Finanzverwaltung",
