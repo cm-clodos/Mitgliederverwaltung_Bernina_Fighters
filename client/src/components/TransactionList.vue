@@ -45,7 +45,8 @@
                                         class="btn btn-success action-btn">
                                         <font-awesome-icon class="action-icon" icon="pencil" />
                                     </RouterLink>
-                                    <button data-test="delete-btn" type="button" @click=""
+                                    <button data-test="delete-btn" type="button"
+                                        @click="deleteConfirmation(transaction.transaction_id)"
                                         class="btn btn-danger action-btn"><font-awesome-icon class="action-icon"
                                             icon="trash-can" /></button>
                                 </div>
@@ -74,20 +75,25 @@
 import { RouterLink } from "vue-router";
 import axios from "/src/api/axios.mjs";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import ConfirmModal from "@/components/ConfirmModal.vue";
+import { useToast } from 'vue-toast-notification';
 export default {
     name: 'TransactionList',
 
     components: {
         FontAwesomeIcon,
+        ConfirmModal,
 
     },
     data() {
         return {
+            toast: useToast(),
             selectedAccountId: '',
             accounts: [],
             allTransactions: [
 
             ],
+            transactionIdToDelete: null,
             currentPage: 1,
             totalPages: 1,
             modalVisible: false,
@@ -136,6 +142,22 @@ export default {
                 });
 
         },
+        deleteTransaction(id) {
+            axios.delete(`./transaction/${id}`).then(res => {
+                if (res.status === 202) {
+                    console.log(res.data.message);
+                    this.toast.success(res.data.message);
+                    this.loadTransactions();
+                }
+            }).catch(error => {
+                console.log(error);
+                if ([404, 500].includes(error.response.status)) {
+                    this.toast.error(error.response.data.message);
+                } else {
+                    console.log("Unexpected error: " + error.response.status);
+                }
+            });
+        },
 
         loadTransactions() {
             // Finde den vollständigen Account basierend auf der ausgewählten ID
@@ -164,8 +186,15 @@ export default {
         changePage(page) {
             this.currentPage = page;
         },
-        handleConfirm() {
-            // Bestätigungshandling
+        handleConfirm(value) {
+            this.modalVisible = false;
+            if (value) {
+                this.deleteTransaction(this.transactionIdToDelete);
+            }
+        },
+        deleteConfirmation(id) {
+            this.modalVisible = true;
+            this.transactionIdToDelete = id;
         },
         closeModal() {
             this.modalVisible = false;
