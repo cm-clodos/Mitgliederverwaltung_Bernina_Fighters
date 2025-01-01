@@ -66,6 +66,34 @@ class FinanceHelper {
     }
 
     async getAllTransactionsFromAccount(accountId) {
+        let sql = `
+                SELECT 
+                    t.id AS transaction_id,
+                    a.account_name AS account_name,
+                    c.name AS category_name,
+                    t.trans_date AS transaction_date,
+                    t.type AS transaction_type,
+                    t.amount AS transaction_amount,
+                    t.description AS transaction_description
+                FROM 
+                    transactions t
+                JOIN 
+                    accounts a ON t.account_id = a.account_id
+                JOIN 
+                    transCategories c ON t.transCategory_id = c.id
+                WHERE 
+                    t.account_id = ?
+                ORDER BY 
+                    t.trans_date DESC;
+            `;
+        try {
+            const res = await this.databaseConnector.query(sql, [accountId]);
+            return res.data;
+        } catch (error) {
+            throw error;
+        }
+
+        /*
         let sql = "SELECT * FROM transactions WHERE account_id = ?";
         sql += "ORDER BY trans_date DESC";
         try {
@@ -74,6 +102,8 @@ class FinanceHelper {
         } catch (error) {
             throw error;
         }
+
+        */
     }
 
     async getTransactionById(transId) {

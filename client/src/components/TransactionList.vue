@@ -29,16 +29,26 @@
                                 <th>Kategorie</th>
                                 <th>Beschreibung</th>
                                 <th>Betrag</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody v-if="this.allTransactions.length > 0">
                             <tr v-for="(transaction, index) in displayedTransactions" :key="index">
-                                <td data-cell="konto"> {{ transaction.account_id }}</td>
-                                <td data-cell="datum"> {{ this.formatDate(transaction.trans_date) }}</td>
-                                <td data-cell="typ">{{ transaction.type }}</td>
-                                <td data-cell="kategorie"> {{ transaction.transCategory_id }}</td>
-                                <td data-cell="beschreibung"> {{ transaction.description }}</td>
-                                <td data-cell="betrag"> {{ transaction.amount }} Fr.-</td>
+                                <td data-cell="konto"> {{ transaction.account_name }}</td>
+                                <td data-cell="datum"> {{ this.formatDate(transaction.transaction_date) }}</td>
+                                <td data-cell="typ">{{ transaction.transaction_type }}</td>
+                                <td data-cell="kategorie"> {{ transaction.category_name }}</td>
+                                <td data-cell="beschreibung"> {{ transaction.transaction_description }}</td>
+                                <td data-cell="betrag"> {{ transaction.transaction_amount }} Fr.-</td>
+                                <div class="actions-container">
+                                    <RouterLink :to="{ path: '/finance/transactions/new' }"
+                                        class="btn btn-success action-btn">
+                                        <font-awesome-icon class="action-icon" icon="pencil" />
+                                    </RouterLink>
+                                    <button data-test="delete-btn" type="button" @click=""
+                                        class="btn btn-danger action-btn"><font-awesome-icon class="action-icon"
+                                            icon="trash-can" /></button>
+                                </div>
                             </tr>
                         </tbody>
                         <tbody v-else>
@@ -61,11 +71,14 @@
 </template>
 
 <script>
+import { RouterLink } from "vue-router";
 import axios from "/src/api/axios.mjs";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 export default {
     name: 'TransactionList',
 
     components: {
+        FontAwesomeIcon,
 
     },
     data() {

@@ -70,6 +70,10 @@
                 <li><router-link data-test="link-transaktionen" class="dropdown-item" :to="{ name: 'Transaktionen' }">
                     <span>Transaktionen</span>
                   </router-link></li>
+                <li><router-link data-test="link-transaktion-hinzufügen" class="dropdown-item"
+                    :to="{ name: 'Transaktion hinzufügen' }">
+                    <span>Transaktion hinzufügen</span>
+                  </router-link></li>
                 <li><router-link data-test="link-kategorien-hinzufügen" class="dropdown-item"
                     :to="{ name: 'Finanzverwaltung' }">
                     <span>Verwaltung</span>

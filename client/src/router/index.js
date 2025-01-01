@@ -10,6 +10,7 @@ import ExportView from "@/views/ExportView.vue";
 import LoginForm from "@/components/LoginForm.vue";
 import FinanceManagerView from "@/views/FinanceManagerView.vue";
 import TransactionsView from "@/views/TransactionsView.vue";
+import TransactionNewView from "@/views/TransactionNewView.vue";
 import FinanceManagerAdminView from "@/views/FinanceManagerAdminView.vue";
 import useUserStore from "@/stores/user";
 
@@ -59,6 +60,11 @@ const router = createRouter({
             name: "Transaktionen",
             path: "/finance/transactions",
             component: TransactionsView,
+        },
+        {
+            name: "Transaktion hinzufügen",
+            path: "/finance/transactions/new",
+            component: TransactionNewView,
         },
         {
             name: "Finanzverwaltung",
